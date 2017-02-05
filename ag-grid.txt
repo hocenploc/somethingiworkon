@@ -1,0 +1,23 @@
+//http://coddu.com/ag-grid-crud-demo-using-angularjs/
+var grid = document.querySelector('.ag-fresh');
+var gridOptions = angular.element(grid).scope().gridOptions;
+var gridApi = gridOptions.api;
+var columnApi = gridOptions.columnApi;
+function getColumnKey(columnName){
+  var columns = columnApi.getAllColumns();
+  for (var i = 0; i < columns.length;i++) {
+    if (columns[i].colDef.headerName == columnName)
+      return columns[i].colDef.field;
+  }
+  return '';
+}
+function getNodeUsingIdentifier(identifierColumnName, identifierColumnValue) {
+  var identifiedNode = null;
+  gridApi.forEachNodeAfterFilter(function(node){
+    if (node.data[getColumnKey(identifierColumnName)] == identifierColumnValue)
+      identifiedNode = node;
+  });
+  return identifiedNode;
+}
+gridApi.selectNode(getNodeUsingIdentifier('Custom No Angular', 'DDD'));
+//console.log(getNodeUsingIdentifier('Custom With Angular', 'CCC').data[getColumnKey('Default String')]);
